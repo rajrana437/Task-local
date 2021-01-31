@@ -28,6 +28,15 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+
+app.use(session({
+  secret: "Our little secret.",
+  resave: false,
+  saveUninitialized: false
+}));
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -48,7 +57,8 @@ const Post = mongoose.model("Post", postSchema); //posts model
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String
+  password: String,
+  secret: String
 }); //User details schema
 
 userSchema.plugin(passportLocalMongoose);
@@ -114,7 +124,7 @@ app.post("/compose", function(req, res){
     }
   });
   console.log(post);
-  res.redirect("/");
+  res.redirect("/home");
 });
 
 
@@ -128,7 +138,7 @@ app.post("/register", function(req, res){
       res.redirect("/register");
     }else{
       passport.authenticate("local")(req, res, function(){
-        res.redirect("/home");
+        res.redirect("/compose");
       })
     }
   })
