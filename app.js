@@ -33,7 +33,7 @@ const Post = mongoose.model("Post", postSchema);
 
 //const posts = [];
 
-app.get("/welcome", function(req, res){
+app.get("/", function(req, res){
   res.render("welcome")
 });
 
@@ -45,7 +45,7 @@ app.get("/login", function(req, res){
   res.render("login")
 });
 
-app.get("/", function(req, res){
+app.get("/home", function(req, res){
   Post.find({}, function(err, posts){
     res.render("home", {
       startingContent: homeStartingContent,
