@@ -12,7 +12,7 @@ const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
-mongoose.connect("mongodb://localhost:27017/myblogDB", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://rajrana437:raj123456@cluster0.j1u1k.mongodb.net/myBlogDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 const homeStartingContent = "The secret of change is to focus all of your energy, not on fighting the old, but building on the new.";
@@ -23,6 +23,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+app.use(session({
+  secret: "Our little secret.",
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -35,6 +40,10 @@ const postSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true
+  },
+  author: { 
+    type: String, 
+    default: 'Anonymous' 
   }
 }); //post schema
 
@@ -101,6 +110,7 @@ app.get("/compose", function(req, res){
 app.post("/compose", function(req, res){
 
   const post = new Post({
+    author: req.body.authorname || 'Anonymous',
     title: req.body.postTitle,
     content: req.body.postBody
   });
@@ -169,16 +179,18 @@ app.get("/logout", function(req, res){
   res.redirect("/");
 });
 
-const postId = Post._id;
-app.get("/posts/:postId", function(req, res){
-  const requiredPostId = req.params.postId;
-  Post.findOne({_id: requiredPostId}, function(err, post){
-    res.render("post", {
-      title: post.title,
-      content: post.content
-    });
-  });
-});
-app.listen(3000, function() {
+// const postId = Post._id;
+// app.get("/posts/:postId", function(req, res){
+//   const requiredPostId = req.params.postId;
+//   Post.findOne({_id: requiredPostId}, function(err, post){
+//     res.render("post", {
+//       title: post.title,
+//       content: post.content,
+//       author: post.author
+//     });
+//   });
+// });
+
+app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");
 });
