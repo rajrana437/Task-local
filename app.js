@@ -86,12 +86,20 @@ app.get("/login", function(req, res){
 });
 
 app.get("/home", function(req, res){
+
   Post.find({}, function(err, posts){
-    res.render("home", {
+    if (req.isAuthenticated())
+    { 
+      res.render("home", {
       startingContent: homeStartingContent,
       author: author,
       posts: posts
     });
+  }else{
+    res.redirect("/");
+  }
+
+   
   });
 });
 
@@ -104,7 +112,12 @@ app.get("/contact", function(req, res){
 });
 
 app.get("/compose", function(req, res){
-  res.render("compose");
+  if (req.isAuthenticated())
+  {
+    res.render("compose");
+  }else{
+    res.redirect("/");
+};
 });
 
 app.post("/compose", function(req, res){
@@ -166,13 +179,13 @@ const user =new User({
 });
 
 
-app.get("/home", function(req, res){
-  if (req.isAuthenticated()){
-    res.render("home");
-  }else{
-    res.redirect("/login");
-  }
-});
+// app.get("/home", function(req, res){
+//   if (req.isAuthenticated()){
+//     res.render("home");
+//   }else{
+//     res.redirect("/");
+//   }
+// });
 
 app.get("/logout", function(req, res){
   req.logout();
