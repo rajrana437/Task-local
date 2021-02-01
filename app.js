@@ -12,7 +12,7 @@ const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
-mongoose.connect("mongodb+srv://rajrana437:raj123456@cluster0.j1u1k.mongodb.net/myBlogDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/myblogDB", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 
 const homeStartingContent = "The secret of change is to focus all of your energy, not on fighting the old, but building on the new.";
