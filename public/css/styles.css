@@ -24,7 +24,7 @@ html {
   letter-spacing: 5px;
 }
 .navbar-nav li a:hover {
-  color: #1abc9c !important;
+  color: #fd8c04 !important;
 }
 
 .footer-padding {
@@ -37,7 +37,7 @@ html {
   bottom: 0;
   width: 100%;
   height: 60px;
-  background-color: #1abc9c;
+  background-color: #fd8c04;
 }
 
 .footer p {
